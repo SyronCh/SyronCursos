@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYRONCH — Curso</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#090909;--white:#ede9e0;--grey:#5a5a5a;--line:rgba(255,255,255,0.09)}
+body{background:var(--black);color:var(--white);font-family:'Space Mono',monospace;overflow-x:hidden;cursor:crosshair;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.018) 3px,rgba(0,0,0,0.018) 4px);pointer-events:none;z-index:9999}
+
+.bg{position:fixed;inset:0;background-image:url('assets/bg.png');background-size:cover;background-position:center top;opacity:0.3;filter:contrast(1.1);z-index:-1}
+.bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(9,9,9,0.3) 0%,rgba(9,9,9,0.97) 85%)}
+
+header{max-width:1280px;margin:0 auto;padding:48px 28px 0}
+.sec-label{font-size:0.6rem;letter-spacing:0.44em;text-transform:uppercase;color:var(--grey);display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--line)}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);letter-spacing:0.08em;line-height:1}
+.checker{width:100%;height:16px;background-image:repeating-conic-gradient(rgba(255,255,255,0.16) 0% 25%,transparent 0% 50%);background-size:16px 16px;margin:28px 0 0}
+
+.layout{max-width:1280px;margin:0 auto;padding:32px 28px 60px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+
+/* Player */
+.player{border:1px solid rgba(255,255,255,0.11);background:rgba(0,0,0,0.6)}
+.frame{position:relative;aspect-ratio:16/9;background:#000}
+.frame video,.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.info{padding:22px 24px 26px;border-top:1px solid var(--line)}
+.info .cat{font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--grey)}
+.info h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3rem);letter-spacing:0.06em;line-height:1;margin:8px 0 12px}
+.info p{font-size:0.78rem;line-height:1.9;color:#888;max-width:640px}
+.nav{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{padding:10px 20px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.02);color:var(--white);font-family:inherit;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;cursor:crosshair;transition:border-color .2s,background .2s}
+.btn:hover:not(:disabled){border-color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.06)}
+.btn:disabled{opacity:0.25}
+
+/* Sidebar */
+aside{border:1px solid rgba(255,255,255,0.11);background:rgba(9,9,9,0.75);position:sticky;top:24px}
+.aside-head{padding:16px 20px;font-size:0.6rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--grey);border-bottom:1px solid var(--line)}
+.cat-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 20px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--white);font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.08em;cursor:crosshair;text-align:left;transition:background .2s}
+.cat-btn:hover{background:rgba(255,255,255,0.04)}
+.cat-btn small{font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;color:var(--grey);margin-left:auto}
+.cat-btn .chev{font-family:'Space Mono',monospace;font-size:0.9rem;transition:transform .25s}
+.cat.open .chev{transform:rotate(90deg)}
+.mods{list-style:none;display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.cat.open .mods{grid-template-rows:1fr}
+.mods > div{overflow:hidden}
+.mod{display:flex;align-items:center;gap:14px;width:100%;padding:13px 20px 13px 24px;background:none;border:0;border-bottom:1px solid var(--line);border-left:2px solid transparent;color:#999;font-family:inherit;font-size:0.72rem;letter-spacing:0.08em;text-align:left;cursor:crosshair;transition:color .2s,background .2s,border-color .2s}
+.mod:hover{color:var(--white);background:rgba(255,255,255,0.03)}
+.mod.active{color:var(--white);border-left-color:var(--white);background:rgba(255,255,255,0.06)}
+.mod .n{font-size:0.6rem;color:var(--grey);min-width:22px}
+.mod .t{flex:1}
+.mod .d{font-size:0.6rem;color:var(--grey)}
+
+footer{border-top:1px solid rgba(255,255,255,0.05);text-align:center;padding:30px 16px;font-size:0.58rem;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.15)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;padding:24px 16px 48px}
+  header{padding:32px 16px 0}
+  aside{position:static}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<header>
+  <p class="sec-label">SYRONCH — Curso</p>
+  <h1>BUILDING THE VOID</h1>
+  <div class="checker"></div>
+</header>
+
+<main class="layout">
+  <section class="player">
+    <div class="frame" id="frame"></div>
+    <div class="info">
+      <p class="cat" id="vCat"></p>
+      <h2 id="vTitle"></h2>
+      <p id="vDesc"></p>
+      <div class="nav">
+        <button class="btn" id="prev">← Anterior</button>
+        <button class="btn" id="next">Próximo →</button>
+      </div>
+    </div>
+  </section>
+
+  <aside>
+    <div class="aside-head">Conteúdo do curso</div>
+    <div id="list"></div>
+  </aside>
+</main>
+
+<footer>© SYRONCH — ALL RIGHTS RESERVED &nbsp;·&nbsp; BUILT IN THE VOID</footer>
+
+<script>
+/* ============================================================
+   EDITE AQUI: categorias e vídeos.
+   - Vídeo local:  src: "assets/videos/arquivo.mp4"
+   - YouTube:      youtube: "ID_DO_VIDEO"  (ex: "dQw4w9WgXcQ")
+   ============================================================ */
+const COURSE = [
+  {
+    category: "Arquitetura",
+    modules: [
+      { title: "Modular Assets", duration: "", src: "assets/videos/modular-assets.mp4",
+        desc: "Como construir peças modulares reutilizáveis para montar cenários." },
+      { title: "UV Mapping", duration: "", src: "assets/videos/uv-mapping.mp4",
+        desc: "Desdobrando UVs de forma limpa para texturização." }
+    ]
+  }
+];
+
+const flat = [];
+COURSE.forEach((c, ci) => c.modules.forEach((m, mi) => flat.push({ ...m, category: c.category, ci, mi })));
+let current = 0;
+
+const list = document.getElementById('list');
+COURSE.forEach((c, ci) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'cat open';
+  wrap.innerHTML = `<button class="cat-btn"><span>${c.category}</span><small>${c.modules.length} vídeos</small><span class="chev">›</span></button>
+    <div class="mods"><div></div></div>`;
+  wrap.querySelector('.cat-btn').onclick = () => wrap.classList.toggle('open');
+  const inner = wrap.querySelector('.mods > div');
+  c.modules.forEach((m, mi) => {
+    const idx = flat.findIndex(f => f.ci === ci && f.mi === mi);
+    const b = document.createElement('button');
+    b.className = 'mod'; b.dataset.idx = idx;
+    b.innerHTML = `<span class="n">${String(mi + 1).padStart(2, '0')}</span><span class="t">${m.title}</span><span class="d">${m.duration || ''}</span>`;
+    b.onclick = () => load(idx, true);
+    inner.appendChild(b);
+  });
+  list.appendChild(wrap);
+});
+
+function load(i, autoplay) {
+  current = i;
+  const v = flat[i];
+  const frame = document.getElementById('frame');
+  frame.innerHTML = v.youtube
+    ? `<iframe src="https://www.youtube.com/embed/${v.youtube}?rel=0${autoplay ? '&autoplay=1' : ''}" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`
+    : `<video src="${v.src}" controls ${autoplay ? 'autoplay' : ''} playsinline></video>`;
+  const vid = frame.querySelector('video');
+  if (vid) vid.onended = () => { if (current < flat.length - 1) load(current + 1, true); };
+  document.getElementById('vCat').textContent = `${v.category} · Módulo ${String(v.mi + 1).padStart(2, '0')}`;
+  document.getElementById('vTitle').textContent = v.title;
+  document.getElementById('vDesc').textContent = v.desc || '';
+  document.getElementById('prev').disabled = i === 0;
+  document.getElementById('next').disabled = i === flat.length - 1;
+  document.querySelectorAll('.mod').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
+  history.replaceState(null, '', '#' + (i + 1));
+}
+document.getElementById('prev').onclick = () => load(current - 1, true);
+document.getElementById('next').onclick = () => load(current + 1, true);
+
+const start = parseInt(location.hash.slice(1)) - 1;
+load(start >= 0 && start < flat.length ? start : 0, false);
+</script>
+</body>
+</html>
