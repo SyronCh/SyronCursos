@@ -1,0 +1,22 @@
+{
+  "title": "BUILDING THE VOID",
+  "categories": [
+    {
+      "category": "Arquitetura",
+      "modules": [
+        {
+          "title": "Modular Assets",
+          "youtube": "ub3cSoom47s",
+          "duration": "",
+          "desc": "Como construir peças modulares reutilizáveis para montar cenários."
+        },
+        {
+          "title": "UV Mapping",
+          "youtube": "EaM1s1XvzVM",
+          "duration": "",
+          "desc": "Desdobrando UVs de forma limpa para texturização."
+        }
+      ]
+    }
+  ]
+}

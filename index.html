@@ -67,7 +67,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);text-align:center;padding:30p
 
 <header>
   <p class="sec-label">SYRONCH — Curso</p>
-  <h1>BUILDING THE VOID</h1>
+  <h1></h1>
   <div class="checker"></div>
 </header>
 
@@ -94,23 +94,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);text-align:center;padding:30p
 <footer>© SYRONCH — ALL RIGHTS RESERVED &nbsp;·&nbsp; BUILT IN THE VOID</footer>
 
 <script>
-/* ============================================================
-   EDITE AQUI: categorias e vídeos.
-   - Vídeo local:  src: "assets/videos/arquivo.mp4"
-   - YouTube:      youtube: "ID_DO_VIDEO"  (ex: "dQw4w9WgXcQ")
-   ============================================================ */
-const COURSE = [
-  {
-    category: "Arquitetura",
-    modules: [
-      { title: "Modular Assets", duration: "", src: "assets/videos/modular-assets.mp4",
-        desc: "Como construir peças modulares reutilizáveis para montar cenários." },
-      { title: "UV Mapping", duration: "", src: "assets/videos/uv-mapping.mp4",
-        desc: "Desdobrando UVs de forma limpa para texturização." }
-    ]
-  }
-];
+/* Os vídeos e categorias ficam em course.json */
+fetch('course.json').then(r => r.json()).then(init).catch(() => {
+  document.getElementById('vTitle').textContent = 'Erro ao carregar course.json';
+});
 
+function init(data) {
+const COURSE = data.categories;
+if (data.title) document.querySelector('h1').textContent = data.title;
 const flat = [];
 COURSE.forEach((c, ci) => c.modules.forEach((m, mi) => flat.push({ ...m, category: c.category, ci, mi })));
 let current = 0;
@@ -156,6 +147,7 @@ document.getElementById('next').onclick = () => load(current + 1, true);
 
 const start = parseInt(location.hash.slice(1)) - 1;
 load(start >= 0 && start < flat.length ? start : 0, false);
+}
 </script>
 </body>
 </html>
